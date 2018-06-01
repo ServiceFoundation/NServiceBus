@@ -147,7 +147,7 @@ namespace NServiceBus.Core.Analyzer.Tests.Helpers
             var diagnostics = new List<Diagnostic>();
             foreach (var project in new HashSet<Project>(documents.Select(document => document.Project)))
             {
-                var compilationWithAnalyzers = project.GetCompilationAsync().Result.WithAnalyzers(ImmutableArray.Create(analyzer));
+                var compilationWithAnalyzers = (await project.GetCompilationAsync()).WithAnalyzers(ImmutableArray.Create(analyzer));
 
                 foreach (var diagnostic in await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync())
                 {
