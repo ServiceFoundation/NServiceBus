@@ -2,7 +2,7 @@ namespace NServiceBus.Core.Analyzer.Tests.Helpers
 {
     using System;
 
-    public struct DiagnosticResultLocation
+    public readonly struct DiagnosticResultLocation
     {
         public DiagnosticResultLocation(string path, int line, int character)
         {
@@ -16,9 +16,9 @@ namespace NServiceBus.Core.Analyzer.Tests.Helpers
                 throw new ArgumentOutOfRangeException(nameof(character), "character must be >= -1");
             }
 
-            this.Path = path;
-            this.Line = line;
-            this.Character = character;
+            Path = path;
+            Line = line;
+            Character = character;
         }
 
         public string Path { get; }
