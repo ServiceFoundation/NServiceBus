@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Microsoft.CodeAnalysis;
 
-    internal static class SymbolExtensions
+    static class SymbolExtensions
     {
         public static string GetFullName(this IMethodSymbol method)
         {
