@@ -58,7 +58,7 @@ namespace NServiceBus.Core.Analyzer.Tests
 
         // IEndpointInstance
         [TestCase("IEndpointInstance", "obj.Stop();")]
-        public async Task DiagnosticIsReportedForCorePublicMethods(string type, string call)
+        public Task DiagnosticIsReportedForCorePublicMethods(string type, string call)
         {
             var source =
 $@"using NServiceBus;
@@ -77,7 +77,7 @@ class Foo
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 9) },
             };
 
-            await Verify(source, expected);
+            return Verify(source, expected);
         }
 
         [TestCase("session.Send(new object());")]
@@ -93,7 +93,7 @@ class Foo
         [TestCase("session.Publish<object>();")]
         [TestCase("session.Publish<object>(_ => { });")]
         [TestCase("session.Publish<object>(_ => { }, new PublishOptions());")]
-        public async Task DiagnosticIsReportedForUniformSession(string call)
+        public Task DiagnosticIsReportedForUniformSession(string call)
         {
             var source =
 $@"using NServiceBus;
@@ -113,7 +113,7 @@ class Foo
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 7, 9) },
             };
 
-            await Verify(source, expected);
+            return Verify(source, expected);
         }
 
         [TestCase("RequestTimeout<object>(context, DateTime.Now);")]
@@ -121,7 +121,7 @@ class Foo
         [TestCase("RequestTimeout<object>(context, TimeSpan.Zero);")]
         [TestCase("RequestTimeout<object>(context, TimeSpan.Zero, new object());")]
         [TestCase("ReplyToOriginator(context, new object());")]
-        public async Task DiagnosticIsReportedForSagaProtectedMethods(string call)
+        public Task DiagnosticIsReportedForSagaProtectedMethods(string call)
         {
             var source =
 $@"using System;
@@ -139,11 +139,11 @@ class TestSaga : Saga<object>
                 Severity = DiagnosticSeverity.Error,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 7, 9) },
             };
-            await Verify(source, expected);
+            return Verify(source, expected);
         }
 
         [Test]
-        public async Task DiagnosticIsReportedForAsyncMethods()
+        public Task DiagnosticIsReportedForAsyncMethods()
         {
             var source =
 @"using NServiceBus;
@@ -162,7 +162,7 @@ class Foo
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 9) },
             };
 
-            await Verify(source, expected);
+            return Verify(source, expected);
         }
 
         [TestCase(
@@ -213,7 +213,7 @@ class Foo
         Task.Run(() => {});
 }",
             Description = "because a non-NSB method is called.")]
-        public async Task NoDiagnosticIsReported(string source) => await Verify(source);
+        public Task NoDiagnosticIsReported(string source) => Verify(source);
 
         protected override DiagnosticAnalyzer GetAnalyzer() => new AwaitOrCaptureTasksAnalyzer();
     }
