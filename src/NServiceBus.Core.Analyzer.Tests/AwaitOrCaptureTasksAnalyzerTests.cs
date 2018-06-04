@@ -171,8 +171,10 @@ using NServiceBus;
 using System.Threading.Tasks;
 class Foo
 {
-    async Task Bar(IMessageHandlerContext context) =>
+    async Task Bar(IMessageHandlerContext context)
+    {
         await context.Send(null);
+    }
 }",
             Description = "because the task is awaited.")]
         [TestCase(
@@ -191,8 +193,10 @@ using NServiceBus;
 using System.Threading.Tasks;
 class Foo
 {
-    void Bar(IMessageSession session) =>
+    void Bar(IMessageSession session)
+    {
         session.Send(null).GetAwaiter().GetResult();
+    }
 }",
             Description = "because the task is awaited by blocking the thread.")]
         [TestCase(
@@ -200,8 +204,10 @@ class Foo
 using NServiceBus;
 class Foo
 {
-    void Bar(IMessageSession session) =>
+    void Bar(IMessageSession session)
+    {
         session.Send(null).Wait();
+    }
 }",
             Description = "because the task is awaited by blocking the thread.")]
         [TestCase(
@@ -209,8 +215,10 @@ class Foo
 using System.Threading.Tasks;
 class Foo
 {
-    void Bar(object message) =>
+    void Bar(object message)
+    {
         Task.Run(() => {});
+    }
 }",
             Description = "because a non-NSB method is called.")]
         public Task NoDiagnosticIsReported(string source) => Verify(source);
