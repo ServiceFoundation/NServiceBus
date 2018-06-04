@@ -43,7 +43,7 @@ namespace NServiceBus.Core.Analyzer
 
         static bool IsMethodRequiringAwait(ExpressionSyntax call, SyntaxNodeAnalysisContext context) =>
             context.SemanticModel.GetSymbolInfo(call).Symbol is IMethodSymbol methodSymbol &&
-                methods.Contains(methodSymbol.GetFullName());
+            methods.Contains(methodSymbol.GetFullName());
 
         static readonly DiagnosticDescriptor diagnostic = new DiagnosticDescriptor(
             "NSB0001",
