@@ -47,12 +47,12 @@ namespace NServiceBus.Core.Analyzer
 
         static readonly DiagnosticDescriptor diagnostic = new DiagnosticDescriptor(
             "NSB0001",
-            "Await or capture tasks",
+            "Await or capture Task",
             "A Task returned by an NServiceBus method is not awaited or assigned to a variable.",
             "NServiceBus.Code",
             DiagnosticSeverity.Error,
             true,
-            "Tasks returned by specific NServiceBus methods must be awaited. Failure to await these Tasks may result in message loss due to swallowed exceptions. If the task is assigned to a variable, this diagnostic is not shown, but the Task must still be awaited.");
+            "Tasks returned by NServiceBus methods must be awaited. Failure to await these Tasks may result in message loss. If the Task is assigned to a variable, this diagnostic is not shown, but the Task must still be awaited.");
 
         static readonly ImmutableHashSet<string> methods = ImmutableHashSet.Create(
             StringComparer.Ordinal,
